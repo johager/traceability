@@ -11,8 +11,7 @@ const port = process.env.PORT || 4055
 
 const Rollbar = require('rollbar')
 const rollbar = new Rollbar({
-//   accessToken: 'process.env.ROLLBAR_TOKEN',
-  accessToken: '689d30bdb2664122a1e1253efed8c5b6',
+  accessToken: 'process.env.ROLLBAR_TOKEN',
   captureUncaught: true,
   captureUnhandledRejections: true,
 })
@@ -37,8 +36,20 @@ app.post('/api/signup', (req, res) => {
     let {name, email} = req.body
     people.push({name: name, email: email})
     console.log("people:", people)
-    rollbar.log('signup success', {name: name, email: email})
+    rollbar.info('signup success', {name: name, email: email})
     res.status(200).send(`name: '${name}', email: '${email}'`)
+})
+
+app.get('/api/critical', (req, res) => {
+    try {
+        nonExistentFunction()
+    } catch (err) {
+        rollbar.critical('critical: failed to find nonExistentFunction')
+    }
+})
+
+app.get('/api/warning', (req, res) => {
+    rollbar.warning('warning: handled /api/warning')
 })
 
 app.use(rollbar.errorHandler())

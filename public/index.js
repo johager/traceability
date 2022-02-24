@@ -1,4 +1,6 @@
-const form = document.querySelector('form')
+const signupBtn = document.querySelector('button[name="signup"]')
+const criticalBtn = document.querySelector('button[name="critical"]')
+const warningBtn = document.querySelector('button[name="warning"]')
 const p = document.querySelector('p')
 
 function handleSubmit(evt) {
@@ -10,7 +12,7 @@ function handleSubmit(evt) {
     .then(res => {
         console.log("res:", res)
         console.log("res.data:", res.data)
-        form.style.display = 'none'
+        document.querySelector('form').style.display = 'none'
         p.textContent = `Thanks for signing up ${name}!`
         p.style.display = 'block'
         document.querySelector('img').src= `https://cataas.com/cat/says/Thanks ${name}!`
@@ -20,5 +22,36 @@ function handleSubmit(evt) {
     })
 }
 
-form.addEventListener('submit', handleSubmit);
+function handleForceFailCritical(evt) {
+	evt.preventDefault();
+
+    console.log("do get critical")
+
+    axios.get('/api/critical')
+    .then(res => {
+        console.log("returned from critical")
+    })
+    .catch(err => {
+        console.log(err)
+    })
+}
+
+function handleForceFailWarning(evt) {
+	evt.preventDefault();
+
+    console.log("do get warning")
+
+    axios.get('/api/warning')
+    .then(res => {
+        console.log("returned from warning")
+    })
+    .catch(err => {
+        console.log(err)
+    })
+}
+
+signupBtn.addEventListener('click', handleSubmit);
+criticalBtn.addEventListener('click', handleForceFailCritical);
+warningBtn.addEventListener('click', handleForceFailWarning);
+
 p.style.display = 'none'

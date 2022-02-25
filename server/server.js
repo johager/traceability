@@ -16,7 +16,7 @@ const rollbar = new Rollbar({
   captureUnhandledRejections: true,
 })
 
-rollbar.log('Hello world!')
+rollbar.log('Hello world! (live)')
 
 app.get('/', (req,res) => {
     res.sendFile(path.join(__dirname, '../public/index.html'))
@@ -36,7 +36,7 @@ app.post('/api/signup', (req, res) => {
     let {name, email} = req.body
     people.push({name: name, email: email})
     console.log("people:", people)
-    rollbar.info('signup success', {name: name, email: email})
+    rollbar.info('signup success live', {name: name, email: email})
     res.status(200).send(`name: '${name}', email: '${email}'`)
 })
 
@@ -44,13 +44,13 @@ app.get('/api/critical', (req, res) => {
     try {
         nonExistentFunction()
     } catch (err) {
-        rollbar.critical('critical: failed to find nonExistentFunction')
+        rollbar.critical('critical live: failed to find nonExistentFunction')
     }
     res.status(202)
 })
 
 app.get('/api/warning', (req, res) => {
-    rollbar.warning('warning: handled /api/warning')
+    rollbar.warning('warning live: handled /api/warning')
     res.status(202)
 })
 

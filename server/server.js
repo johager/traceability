@@ -4,7 +4,7 @@ const path = require('path')
 const app = express()
 app.use(express.json())
 
-// require('dotenv').config()
+require('dotenv').config()
 
 const port = process.env.PORT || 4055
 // process.env.PORT to get the port from heroku's env file

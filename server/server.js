@@ -9,6 +9,8 @@ require('dotenv').config()
 const port = process.env.PORT || 4055
 // process.env.PORT to get the port from heroku's env file
 
+console.log("ROLLBAR_TOKEN:", process.env.ROLLBAR_TOKEN)
+
 const Rollbar = require('rollbar')
 const rollbar = new Rollbar({
   accessToken: process.env.ROLLBAR_TOKEN,

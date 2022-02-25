@@ -6,10 +6,7 @@ app.use(express.json())
 
 require('dotenv').config()
 
-const port = process.env.PORT || 4055
-// process.env.PORT to get the port from heroku's env file
-
-console.log("ROLLBAR_TOKEN:", process.env.ROLLBAR_TOKEN)
+const port = process.env.PORT
 
 const Rollbar = require('rollbar')
 const rollbar = new Rollbar({
@@ -48,13 +45,11 @@ app.get('/api/critical', (req, res) => {
     } catch (err) {
         rollbar.critical('critical live: failed to find nonExistentFunction')
     }
-    // res.status(202)
     res.status(200).send('OK Critical')
 })
 
 app.get('/api/warning', (req, res) => {
     rollbar.warning('warning live: handled /api/warning')
-    // res.status(202)
     res.status(200).send('OK Warning')
 })
 

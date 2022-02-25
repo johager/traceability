@@ -46,12 +46,14 @@ app.get('/api/critical', (req, res) => {
     } catch (err) {
         rollbar.critical('critical live: failed to find nonExistentFunction')
     }
-    res.status(202)
+    // res.status(202)
+    res.status(200).send('OK Critical')
 })
 
 app.get('/api/warning', (req, res) => {
     rollbar.warning('warning live: handled /api/warning')
-    res.status(202)
+    // res.status(202)
+    res.status(200).send('OK Warning')
 })
 
 app.use(rollbar.errorHandler())

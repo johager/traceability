@@ -6,7 +6,7 @@ app.use(express.json())
 
 require('dotenv').config()
 
-const port = process.env.PORT
+const { PORT, ENVIRONMENT } = process.env
 
 const Rollbar = require('rollbar')
 const rollbar = new Rollbar({
@@ -15,7 +15,7 @@ const rollbar = new Rollbar({
   captureUnhandledRejections: true,
 })
 
-rollbar.log('Hello world! (live)')
+rollbar.log(`Hello world! (${ENVIRONMENT})`)
 
 app.get('/', (req,res) => {
     res.sendFile(path.join(__dirname, '../public/index.html'))
@@ -43,16 +43,16 @@ app.get('/api/critical', (req, res) => {
     try {
         nonExistentFunction()
     } catch (err) {
-        rollbar.critical('critical live: failed to find nonExistentFunction')
+        rollbar.critical(`critical (${ENVIRONMENT}): failed to find nonExistentFunction`)
     }
     res.status(200).send('OK Critical')
 })
 
 app.get('/api/warning', (req, res) => {
-    rollbar.warning('warning live: handled /api/warning')
+    rollbar.warning(`warning (${ENVIRONMENT}): handled /api/warning`)
     res.status(200).send('OK Warning')
 })
 
 app.use(rollbar.errorHandler())
 
-app.listen(port, () => { console.log(`running on port ${port}`)})
+app.listen(PORT, () => { console.log(`running on port ${PORT} (${ENVIRONMENT})`)})
